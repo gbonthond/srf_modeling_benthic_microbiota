@@ -42,7 +42,7 @@ srf_var[,c("mem1","mem2")] <- srf_mems
 #### CORRELATIONS ####
 col2 <- colorRampPalette(c("#6b0000","#d40000","#ff7909","#fff2b5","#FFFFFF","#FFFFFF","#FFFFFF","#d5f6ff","#b4d4e7","#2166AC","#053062"))
 
-srf_cor_mat <- corr.test(srf_var[,c("grain_mm","grain_slope","pebble_percent","sand_percent","mud_percent","temperature","toc_percent","vms_ospar","shear_stress")],
+srf_cor_mat <- corr.test(srf_var[,c("grain_mm","grain_slope","pebble_percent","sand_percent","mud_percent","temperature","tom_percent","vms_ospar","shear_stress")],
                          method="spearman",
                          adjust = "none",ci=F)
 
@@ -60,16 +60,16 @@ srf_perms <- with(srf_var,
                   how(nperm = 9999, 
                       blocks = station))
   
-srf_permanova_otu <- adonis2(srf_otu ~ log(seq_depth) + mem1 + mem2 + vms_ospar + temperature + grain_phi + logit(toc_proportion) + sqrt(mud_percent) + shear_stress,
+srf_permanova_otu <- adonis2(srf_otu ~ log(seq_depth) + mem1 + mem2 + vms_ospar + temperature + grain_phi + logit(tom_proportion) + sqrt(mud_percent) + shear_stress,
                              data=srf_var, permutations=srf_perms,
                              by = "margin",sqrt.dist = T,
                              method = "robust.aitchison");srf_permanova_otu
 
-srf_permanova_gen <- adonis2(t(srf_gen[,-c(1:6)]) ~ log(seq_depth) + mem1 + mem2 + vms_ospar + temperature + grain_phi + logit(toc_proportion) + sqrt(mud_percent) + shear_stress,
+srf_permanova_gen <- adonis2(t(srf_gen[,-c(1:6)]) ~ log(seq_depth) + mem1 + mem2 + vms_ospar + temperature + grain_phi + logit(tom_proportion) + sqrt(mud_percent) + shear_stress,
                              data=srf_var, permutations=srf_perms,
                              by = "margin",sqrt.dist = T,
                              method = "robust.aitchison");srf_permanova_gen
-srf_permanova_ko <- adonis2(srf_ko ~ log(seq_depth) + mem1 + mem2 + vms_ospar + temperature + grain_phi + logit(toc_proportion) + sqrt(mud_percent) + shear_stress,
+srf_permanova_ko <- adonis2(srf_ko ~ log(seq_depth) + mem1 + mem2 + vms_ospar + temperature + grain_phi + logit(tom_proportion) + sqrt(mud_percent) + shear_stress,
                             data=srf_var, permutations=srf_perms,
                             by = "margin",sqrt.dist = T,
                             method = "robust.aitchison");srf_permanova_ko
@@ -80,17 +80,17 @@ srf_permanova_ko <- adonis2(srf_ko ~ log(seq_depth) + mem1 + mem2 + vms_ospar + 
 
 #### MGLMS ####
 # (recommended to run summary.manyglm() to get deviances on an hpc )
-mGLM_otu <- manyglm(mvabund(srf_otu) ~ log(seq_depth) + mem1 + mem2 + vms_ospar + temperature + grain_phi + logit(toc_proportion) + sqrt(mud_percent) + shear_stress,
+mGLM_otu <- manyglm(mvabund(srf_otu) ~ log(seq_depth) + mem1 + mem2 + vms_ospar + temperature + grain_phi + logit(tom_proportion) + sqrt(mud_percent) + shear_stress,
                     show.coef=T,show.fitted=T,show.residuals=T,model=T,x=T,y=T,qr=T,data=srf_var,family = "negative.binomial")
 s_mGLM_otu <- summary.manyglm(mGLM_otu,nBoot = 1,block=srf_var$station,show.time = "all",resamp = "case",test = "LR",show.cor = F,show.est = F,show.residuals = F)
 s_mGLM_otu$coefficients
 
-mGLM_gen <- manyglm(mvabund(t(srf_gen[,-c(1:6)])) ~ log(seq_depth) + mem1 + mem2 + vms_ospar + temperature + grain_phi + logit(toc_proportion) + sqrt(mud_percent) + shear_stress,
+mGLM_gen <- manyglm(mvabund(t(srf_gen[,-c(1:6)])) ~ log(seq_depth) + mem1 + mem2 + vms_ospar + temperature + grain_phi + logit(tom_proportion) + sqrt(mud_percent) + shear_stress,
                     show.coef=T,show.fitted=T,show.residuals=T,model=T,x=T,y=T,qr=T,data=srf_var,family = "negative.binomial")
 s_mGLM_gen <- summary.manyglm(mGLM_gen,nBoot = 1,block=srf_var$station,show.time = "all",resamp = "case",test = "LR",show.cor = T,show.est = T,show.residuals = T)
 s_mGLM_gen$coefficients
 
-mGLM_ko <- manyglm(mvabund(srf_ko) ~ log(seq_depth) + mem1 + mem2 + vms_ospar + temperature + grain_phi + logit(toc_proportion) + sqrt(mud_percent) + shear_stress,
+mGLM_ko <- manyglm(mvabund(srf_ko) ~ log(seq_depth) + mem1 + mem2 + vms_ospar + temperature + grain_phi + logit(tom_proportion) + sqrt(mud_percent) + shear_stress,
                    show.coef=T,show.fitted=T,show.residuals=T,model=T,x=T,y=T,qr=T,data=srf_var,family = "negative.binomial")
 s_mGLM_ko <- summary.manyglm(mGLM_ko,nBoot = 1,block=srf_var$station,show.time = "all",resamp = "case",test = "LR",show.cor = T,show.est = T,show.residuals = T)
 s_mGLM_ko$coefficients
@@ -132,7 +132,7 @@ srf_mglm_nmds_gen2 <- metaMDS(rmat_gen, distance = "robust.aitchison",trymax = 2
 
 
 # ordination vectors
-envs <- with(srf_var,data.frame("grain_phi"=grain_phi,"mud"=sqrt(mud_percent),"toc"=logit(toc_proportion),"temperature"=temperature,"shear"=shear_stress,"SAR"=vms_ospar))
+envs <- with(srf_var,data.frame("grain_phi"=grain_phi,"mud"=sqrt(mud_percent),"tom"=logit(tom_proportion),"temperature"=temperature,"shear"=shear_stress,"SAR"=vms_ospar))
 srf_mglm_en_otu <- envfit(srf_mglm_nmds_otu2,envs,permutations = 9999, add=T, na.rm = F)
 srf_mglm_en_gen <- envfit(srf_mglm_nmds_gen2,envs,permutations = 9999, add=T, na.rm = F)
 srf_mglm_en_ko  <- envfit(srf_mglm_nmds_ko2,envs,permutations = 9999, add=T, na.rm = F)
@@ -296,7 +296,7 @@ gimper <- function(model,vars,ord="coefs"){
 
 ## otus ##
 {
-  dif_otus <- gimper(model = mGLM_otu, vars = c("log(seq_depth)","mem1","mem2","grain_phi","sqrt(mud_percent)","temperature","logit(toc_proportion)","shear_stress","vms_ospar"))
+  dif_otus <- gimper(model = mGLM_otu, vars = c("log(seq_depth)","mem1","mem2","grain_phi","sqrt(mud_percent)","temperature","logit(tom_proportion)","shear_stress","vms_ospar"))
   dif_otus$summary_perc <- dif_otus$summary/ncol(srf_otu)*100
   
   srf_mGLM_otu_difs <- ggplot(dif_otus$summary_perc, aes(x=rownames(dif_otus$summary_perc))) + 
@@ -318,14 +318,14 @@ gimper <- function(model,vars,ord="coefs"){
     ggtitle("number of OTUs varying with predictors")
   srf_mGLM_otu_difs
   
-  data.frame("deviance" =s_mGLM_otu$coefficients[c("log(seq_depth)","mem1","mem2","grain_phi","sqrt(mud_percent)","temperature","logit(toc_proportion)","shear_stress","vms_ospar"),1],
-             dif_otus$summary[c("log(seq_depth)","mem1","mem2","grain_phi","sqrt(mud_percent)","temperature","logit(toc_proportion)","shear_stress","vms_ospar"),
+  data.frame("deviance" =s_mGLM_otu$coefficients[c("log(seq_depth)","mem1","mem2","grain_phi","sqrt(mud_percent)","temperature","logit(tom_proportion)","shear_stress","vms_ospar"),1],
+             dif_otus$summary[c("log(seq_depth)","mem1","mem2","grain_phi","sqrt(mud_percent)","temperature","logit(tom_proportion)","shear_stress","vms_ospar"),
                               c("pos_OTUs","neg_OTUs")])
   }
 
 ## kos ##
 {
-  dif_kos <- gimper(model = mGLM_ko, vars = c("log(seq_depth)","mem1","mem2","grain_phi","sqrt(mud_percent)","temperature","logit(toc_proportion)","shear_stress","vms_ospar"))
+  dif_kos <- gimper(model = mGLM_ko, vars = c("log(seq_depth)","mem1","mem2","grain_phi","sqrt(mud_percent)","temperature","logit(tom_proportion)","shear_stress","vms_ospar"))
   dif_kos$summary_perc <- dif_kos$summary/ncol(srf_ko)*100
   
   srf_mGLM_ko_difs <- ggplot(dif_kos$summary_perc, aes(x=rownames(dif_kos$summary_perc))) + 
@@ -350,7 +350,7 @@ gimper <- function(model,vars,ord="coefs"){
 
 ## genera ##
 {
-  dif_gens <- gimper(model = mGLM_gen, vars = c("log(seq_depth)","mem1","mem2","grain_phi","sqrt(mud_percent)","temperature","logit(toc_proportion)","shear_stress","vms_ospar"))
+  dif_gens <- gimper(model = mGLM_gen, vars = c("log(seq_depth)","mem1","mem2","grain_phi","sqrt(mud_percent)","temperature","logit(tom_proportion)","shear_stress","vms_ospar"))
   dif_gens$summary_perc <- round(dif_gens$summary/ncol(mGLM_gen$y)*100,2)
   
   srf_mGLM_gen_difs <- ggplot(dif_gens$summary_perc, aes(x=rownames(dif_gens$summary_perc))) + 

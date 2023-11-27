@@ -63,7 +63,7 @@ srf_var[, "CO2_reduction"] <- rowSums(srf_ko[, colnames(srf_ko) %in% c("K00200",
 
 ## respiration ##
 { 
-  uGamm_respiration <- uGamm(log(respiration) ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(toc_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
+  uGamm_respiration <- uGamm(log(respiration) ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(tom_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
   drd_uGamm_respiration <- dredge(uGamm_respiration,trace = 2, fixed = ~ log(seq_depth) + s(station,bs = "re"))
   data.frame("RI"=sw(subset(drd_uGamm_respiration, delta <= 4)))
   gamm_respiration <- gamm(get.models(drd_uGamm_respiration,1)[[1]]$call$formula, 
@@ -79,7 +79,7 @@ srf_var[, "CO2_reduction"] <- rowSums(srf_ko[, colnames(srf_ko) %in% c("K00200",
 
 ## nitrification ##
 { 
-  uGamm_nitrification <- uGamm(log1p(nitrification) ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(toc_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
+  uGamm_nitrification <- uGamm(log1p(nitrification) ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(tom_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
   drd_uGamm_nitrification <- dredge(uGamm_nitrification,trace = 2, fixed = ~ log(seq_depth) + s(station,bs = "re"))
   data.frame("RI"=sw(subset(drd_uGamm_nitrification, delta <= 4)))
   gamm_nitrification <- gamm(get.models(drd_uGamm_nitrification,1)[[1]]$call$formula, 
@@ -95,7 +95,7 @@ srf_var[, "CO2_reduction"] <- rowSums(srf_ko[, colnames(srf_ko) %in% c("K00200",
 
 ## nitrate_reduction ##
 { 
-  uGamm_nitrate_reduction <- uGamm(log(nitrate_reduction) ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(toc_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
+  uGamm_nitrate_reduction <- uGamm(log(nitrate_reduction) ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(tom_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
   drd_uGamm_nitrate_reduction <- dredge(uGamm_nitrate_reduction,trace = 2, fixed = ~ log(seq_depth) + s(station,bs = "re"))
   data.frame("RI"=sw(subset(drd_uGamm_nitrate_reduction, delta <= 4)))
   gamm_nitrate_reduction <- gamm(get.models(drd_uGamm_nitrate_reduction,1)[[1]]$call$formula, 
@@ -111,7 +111,7 @@ srf_var[, "CO2_reduction"] <- rowSums(srf_ko[, colnames(srf_ko) %in% c("K00200",
 
 ## nitrite_reduction ##
 { 
-  uGamm_nitrite_reduction <- uGamm(log(nitrite_reduction) ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(toc_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
+  uGamm_nitrite_reduction <- uGamm(log(nitrite_reduction) ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(tom_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
   drd_uGamm_nitrite_reduction <- dredge(uGamm_nitrite_reduction,trace = 2, fixed = ~ log(seq_depth) + s(station,bs = "re"))
   data.frame("RI"=sw(subset(drd_uGamm_nitrite_reduction, delta <= 4)))
   gamm_nitrite_reduction <- gamm(get.models(drd_uGamm_nitrite_reduction,1)[[1]]$call$formula, 
@@ -127,7 +127,7 @@ srf_var[, "CO2_reduction"] <- rowSums(srf_ko[, colnames(srf_ko) %in% c("K00200",
 
 ## denitrification ##
 { 
-  uGamm_denitrification <- uGamm(log(denitrification) ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(toc_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
+  uGamm_denitrification <- uGamm(log(denitrification) ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(tom_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
   drd_uGamm_denitrification <- dredge(uGamm_denitrification,trace = 2, fixed = ~ log(seq_depth) + s(station,bs = "re"))
   data.frame("RI"=sw(subset(drd_uGamm_denitrification, delta <= 4)))
   gamm_denitrification <- gamm(get.models(drd_uGamm_denitrification,1)[[1]]$call$formula, 
@@ -143,7 +143,7 @@ srf_var[, "CO2_reduction"] <- rowSums(srf_ko[, colnames(srf_ko) %in% c("K00200",
 
 ## sulfate_reduction ##
 { 
-  uGamm_sulfate_reduction <- uGamm(log(sulfate_reduction) ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(toc_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
+  uGamm_sulfate_reduction <- uGamm(log(sulfate_reduction) ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(tom_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
   drd_uGamm_sulfate_reduction <- dredge(uGamm_sulfate_reduction,trace = 2, fixed = ~ log(seq_depth) + s(station,bs = "re"))
   data.frame("RI"=sw(subset(drd_uGamm_sulfate_reduction, delta <= 4)))
   gamm_sulfate_reduction <- gamm(get.models(drd_uGamm_sulfate_reduction,1)[[1]]$call$formula, 
@@ -159,7 +159,7 @@ srf_var[, "CO2_reduction"] <- rowSums(srf_ko[, colnames(srf_ko) %in% c("K00200",
 
 ## sulfur_oxidation ##
 { 
-  uGamm_sulfur_oxidation <- uGamm(log(sulfur_oxidation) ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(toc_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
+  uGamm_sulfur_oxidation <- uGamm(log(sulfur_oxidation) ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(tom_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
   drd_uGamm_sulfur_oxidation <- dredge(uGamm_sulfur_oxidation,trace = 2, fixed = ~ log(seq_depth) + s(station,bs = "re"))
   data.frame("RI"=sw(subset(drd_uGamm_sulfur_oxidation, delta <= 4)))
   gamm_sulfur_oxidation <- gamm(get.models(drd_uGamm_sulfur_oxidation,1)[[1]]$call$formula, 
@@ -175,7 +175,7 @@ srf_var[, "CO2_reduction"] <- rowSums(srf_ko[, colnames(srf_ko) %in% c("K00200",
 
 ## methane_oxidation ##
 { 
-  uGamm_methane_oxidation <- uGamm(log(methane_oxidation) ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(toc_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
+  uGamm_methane_oxidation <- uGamm(log(methane_oxidation) ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(tom_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
   drd_uGamm_methane_oxidation <- dredge(uGamm_methane_oxidation,trace = 2, fixed = ~ log(seq_depth) + s(station,bs = "re"))
   data.frame("RI"=sw(subset(drd_uGamm_methane_oxidation, delta <= 4)))
   gamm_methane_oxidation <- gamm(get.models(drd_uGamm_methane_oxidation,1)[[1]]$call$formula, 
@@ -191,7 +191,7 @@ srf_var[, "CO2_reduction"] <- rowSums(srf_ko[, colnames(srf_ko) %in% c("K00200",
 
 ## CO2_reduction ##
 { 
-  uGamm_CO2_reduction <- uGamm(log(CO2_reduction) ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(toc_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
+  uGamm_CO2_reduction <- uGamm(log(CO2_reduction) ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(tom_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
   drd_uGamm_CO2_reduction <- dredge(uGamm_CO2_reduction,trace = 2, fixed = ~ log(seq_depth) + s(station,bs = "re"))
   data.frame("RI"=sw(subset(drd_uGamm_CO2_reduction, delta <= 4)))
   gamm_CO2_reduction <- gamm(get.models(drd_uGamm_CO2_reduction,1)[[1]]$call$formula, 

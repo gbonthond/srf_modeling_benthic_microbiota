@@ -43,7 +43,7 @@ srf_var[,"ko_eff_s"] <- calc_biodiv(srf_ko,index = "S_PIE",groups = rownames(srf
 
 ## otus ##
 { 
-  uGamm_otu_eff_s <- uGamm(otu_eff_s ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(toc_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
+  uGamm_otu_eff_s <- uGamm(otu_eff_s ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(tom_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
   drd_uGamm_otu_eff_s <- dredge(uGamm_otu_eff_s,trace = 2, fixed = ~ s(station,bs = "re"))
   data.frame("RI"=sw(subset(drd_uGamm_otu_eff_s, delta <= 4)))
   gamm_otu_eff_s <- gamm(get.models(drd_uGamm_otu_eff_s,1)[[1]]$call$formula, 
@@ -59,7 +59,7 @@ srf_var[,"ko_eff_s"] <- calc_biodiv(srf_ko,index = "S_PIE",groups = rownames(srf
 
 ## genera ##
 { 
-  uGamm_gen_eff_s <- uGamm(gen_eff_s ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(toc_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
+  uGamm_gen_eff_s <- uGamm(gen_eff_s ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(tom_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
   drd_uGamm_gen_eff_s <- dredge(uGamm_gen_eff_s,trace = 2, fixed = ~ s(station,bs = "re"))
   data.frame("RI"=sw(subset(drd_uGamm_gen_eff_s, delta <= 4)))
   gamm_gen_eff_s <- gamm(get.models(drd_uGamm_gen_eff_s,1)[[1]]$call$formula, 
@@ -75,7 +75,7 @@ srf_var[,"ko_eff_s"] <- calc_biodiv(srf_ko,index = "S_PIE",groups = rownames(srf
 
 ## kos ##
 { 
-  uGamm_ko_eff_s <- uGamm(ko_eff_s ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(toc_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
+  uGamm_ko_eff_s <- uGamm(ko_eff_s ~ log(seq_depth) + s(grain_phi, k=4, bs="cr") + s(logit(tom_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_adj),method = "ML", data = srf_var,na.action=na.fail)
   drd_uGamm_ko_eff_s <- dredge(uGamm_ko_eff_s,trace = 2, fixed = ~ s(station,bs = "re"))
   data.frame("RI"=sw(subset(drd_uGamm_ko_eff_s, delta <= 4)))
   gamm_ko_eff_s <- gamm(get.models(drd_uGamm_ko_eff_s,1)[[1]]$call$formula, 
@@ -127,9 +127,9 @@ beta_diversity_calculator <- function(X,var) {
   
   # subsetting to distances within stations only & remove doubled variables
   trimmed_merged <- merged_tables[merged_tables$station.x == merged_tables$station.y,
-                                  c("aitchison","jaccard","station.x","x.x","y_new","seq_depth.x","seq_depth.y","grain_phi.x","mud_percent.x","toc_proportion.x","temperature.x","shear_stress.x","vms_ospar.x")]
+                                  c("aitchison","jaccard","station.x","x.x","y_new","seq_depth.x","seq_depth.y","grain_phi.x","mud_percent.x","tom_proportion.x","temperature.x","shear_stress.x","vms_ospar.x")]
   
-  colnames(trimmed_merged) <- c("aitchison","jaccard","station","x","y_new","seq_depth.x","seq_depth.y","grain_phi","mud_percent","toc_proportion","temperature","shear_stress","vms_ospar")
+  colnames(trimmed_merged) <- c("aitchison","jaccard","station","x","y_new","seq_depth.x","seq_depth.y","grain_phi","mud_percent","tom_proportion","temperature","shear_stress","vms_ospar")
   invisible(trimmed_merged)
 }
 
@@ -139,7 +139,7 @@ srf_ko_beta  <- beta_diversity_calculator(srf_ko,srf_var)
 
 ## otu beta diversity ##
 {
-  uGamm_otu_beta <- uGamm(aitchison ~ log(seq_depth.x) + log(seq_depth.y) + s(grain_phi, k=4, bs="cr") + s(logit(toc_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_new),method = "ML", data = srf_otu_beta,na.action=na.fail)
+  uGamm_otu_beta <- uGamm(aitchison ~ log(seq_depth.x) + log(seq_depth.y) + s(grain_phi, k=4, bs="cr") + s(logit(tom_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_new),method = "ML", data = srf_otu_beta,na.action=na.fail)
   drd_uGamm_otu_beta <- dredge(uGamm_otu_beta,trace = 2, fixed = ~ s(station,bs = "re"))
   data.frame("RI"=sw(subset(drd_uGamm_otu_beta, delta <= 4)))
   gamm_otu_beta <- gamm(get.models(drd_uGamm_otu_beta,subset = 1)[[1]]$call$formula, 
@@ -155,7 +155,7 @@ srf_ko_beta  <- beta_diversity_calculator(srf_ko,srf_var)
 
 ## genus beta diversity ##
 {
-  uGamm_gen_beta <- uGamm(aitchison ~ log(seq_depth.x) + log(seq_depth.y) + s(grain_phi, k=4, bs="cr") + s(logit(toc_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_new),method = "ML", data = srf_gen_beta,na.action=na.fail)
+  uGamm_gen_beta <- uGamm(aitchison ~ log(seq_depth.x) + log(seq_depth.y) + s(grain_phi, k=4, bs="cr") + s(logit(tom_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_new),method = "ML", data = srf_gen_beta,na.action=na.fail)
   drd_uGamm_gen_beta <- dredge(uGamm_gen_beta,trace = 2, fixed = ~ s(station,bs = "re"))
   data.frame("RI"=sw(subset(drd_uGamm_gen_beta, delta <= 4)))
   gamm_gen_beta <- gamm(get.models(drd_uGamm_gen_beta,subset = 1)[[1]]$call$formula, 
@@ -171,7 +171,7 @@ srf_ko_beta  <- beta_diversity_calculator(srf_ko,srf_var)
 
 ## functional beta diversity ##
 {
-  uGamm_ko_beta <- uGamm(aitchison ~ log(seq_depth.x) + log(seq_depth.y) + s(grain_phi, k=4, bs="cr") + s(logit(toc_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_new),method = "ML", data = srf_ko_beta,na.action=na.fail)
+  uGamm_ko_beta <- uGamm(aitchison ~ log(seq_depth.x) + log(seq_depth.y) + s(grain_phi, k=4, bs="cr") + s(logit(tom_proportion), k=4, bs="cr") + s(shear_stress, k=4, bs="cr") + s(sqrt(mud_percent), k=4,bs="cr") +  s(temperature, k=4, bs="cr") + s(vms_ospar, k=4,bs="cr") + s(station, bs="re"), correlation=corExp(form= ~ x + y_new),method = "ML", data = srf_ko_beta,na.action=na.fail)
   drd_uGamm_ko_beta <- dredge(uGamm_ko_beta,trace = 2, fixed = ~ s(station,bs = "re"))
   data.frame("RI"=sw(subset(drd_uGamm_ko_beta, delta <= 4)))
   gamm_ko_beta <- gamm(get.models(drd_uGamm_ko_beta,subset = 1)[[1]]$call$formula, 
